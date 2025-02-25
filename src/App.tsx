@@ -1,24 +1,18 @@
-import { gql, useQuery } from '@apollo/client';
-import './App.css';
+import { useQuery } from '@apollo/client';
 import List from './components/common/List';
-
-const GET_ITEMS = gql`
-  query GetItems {
-    items {
-      name
-    }
-  }
-`;
+import Loading from './components/common/Loading';
+import ErrorMessage from './components/common/ErrorMessage';
+import { GET_ITEMS } from './graphql/queries/getItems';
 
 function App() {
   const { loading, error, data } = useQuery(GET_ITEMS);
 
-  if (loading) return <div><p>Loading...</p></div>;
-  if (error) return <div><p>Error: {error.message}</p></div>;
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage message={error.message} />;
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <header>
         <List items={data.items.map((item: any) => item.name)} />
       </header>
     </div>
